@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Киберпанк Мониторинг</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #9370db; /* Мягкий фиолетовый */
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            text-shadow: 0 0 5px #9370db, 0 0 10px #9370db; /* Меньше неона */
+        }
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #9370db;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 5px #9370db, 0 0 10px #9370db; /* Меньше неона */
+        }
+        .card:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+        .chart-container {
+            position: relative;
+            height: 200px;
+            margin: 20px 0;
+        }
+        .gauges {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .gauge {
+            text-align: center;
+            width: 30%;
+            margin: 10px 0;
+        }
+        .gauge-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Мониторинг сервисов</h1>
+
+        <!-- Карточка статуса -->
+        <div class="card">
+            <h2>Example.com</h2>
+            <p>Статус: <span style="color: #9370db;">Up</span></p>
+            <p>Время отклика: 27.1 ms</p>
+            <p>Uptime (24 часа): 100%</p>
+        </div>
+
+        <!-- График времени отклика -->
+        <div class="card">
+            <h2>График времени отклика</h2>
+            <div class="chart-container">
+                <canvas id="responseTimeChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Круговые индикаторы (спидометры) -->
+        <div class="card">
+            <h2>Нагрузка системы</h2>
+            <div class="gauges">
+                <div class="gauge">
+                    <div class="gauge-title">CPU</div>
+                    <div class="chart-container">
+                        <canvas id="cpuGauge"></canvas>
+                    </div>
+                </div>
+                <div class="gauge">
+                    <div class="gauge-title">RAM</div>
+                    <div class="chart-container">
+                        <canvas id="ramGauge"></canvas>
+                    </div>
+                </div>
+                <div class="gauge">
+                    <div class="gauge-title">Disk</div>
+                    <div class="chart-container">
+                        <canvas id="diskGauge"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Данные для графика времени отклика
+        const responseTimeData = {
+            labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '23:59'],
+            datasets: [{
+                label: 'Время отклика (ms)',
+                data: [30, 40, 25, 50, 35, 45, 27],
+                borderColor: '#9370db',
+                backgroundColor: 'rgba(147, 112, 219, 0.2)',
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBackgroundColor: '#9370db',
+            }]
+        };
+
+        // Настройки графика времени отклика
+        const responseTimeConfig = {
+            type: 'line',
+            data: responseTimeData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: '#9370db',
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(147, 112, 219, 0.1)',
+                        },
+                        ticks: {
+                            color: '#9370db',
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(147, 112, 219, 0.1)',
+                        },
+                        ticks: {
+                            color: '#9370db',
+                        }
+                    }
+                }
+            }
+        };
+
+        // Инициализация графика времени отклика
+        const responseTimeChart = new Chart(
+            document.getElementById('responseTimeChart'),
+            responseTimeConfig
+        );
+
+        // Функция для создания круговых индикаторов
+        const createGauge = (id, value, maxValue) => {
+            const data = {
+                datasets: [{
+                    data: [value, maxValue - value],
+                    backgroundColor: ['#9370db', 'rgba(147, 112, 219, 0.1)'],
+                    borderWidth: 0,
+                }]
+            };
+            const config = {
+                type: 'doughnut',
+                data: data,
+                options: {
+                    circumference: 180,
+                    rotation: -90,
+                    cutout: '80%',
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        tooltip: {
+                            enabled: false,
+                        }
+                    }
+                }
+            };
+            return new Chart(document.getElementById(id), config);
+        };
+
+        // Инициализация круговых индикаторов
+        createGauge('cpuGauge', 75, 100); // CPU: 75%
+        createGauge('ramGauge', 50, 100); // RAM: 50%
+        createGauge('diskGauge', 90, 100); // Disk: 90%
+    </script>
+</body>
+</html>
