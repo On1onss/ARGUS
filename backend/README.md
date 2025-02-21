@@ -1,2 +1,0 @@
-# ARGUS - Backend
-___
