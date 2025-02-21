@@ -7,7 +7,7 @@ ___
 - [x] Add structure
 - [x] Create agent
 - [x] Create server
-- [ ] Create reqirements.txt
+- [x] Create uv.lock
 - [ ] Refactor server
 - [ ] Add auth
   - [ ] Add db
