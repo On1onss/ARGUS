@@ -1,13 +1,16 @@
 # ARGUS 
 <!--A block of information about the repository in badges-->
-![Static Badge](https://img.shields.io/badge/AKP_INA_TEAM-ARGUS-ARGUS)
+![Static Badge](https://img.shields.io/badge/AKP_INA_TEAM-ARGUS-8A2BE2)
+![GitHub last commit](https://img.shields.io/github/last-commit/On1onss/ARGUS)
 ![GitHub top language](https://img.shields.io/github/languages/top/On1onss/ARGUS)
 ![GitHub issues](https://img.shields.io/github/issues/On1onss/ARGUS)
 ![GitHub licence](https://img.shields.io/github/license/On1onss/ARGUS)
 ![GitHub Repo stars](https://img.shields.io/github/stars/On1onss/ARGUS)
-___
-> (Automated Real-time Global Universal Surveillance) - Автоматизированная система глобального универсального мониторинга в реальном времени.
-___
+
+
+> [!IMPORTANT]
+> _(Automated Real-time Global Universal Surveillance) - Автоматизированная система глобального универсального мониторинга в реальном времени._
+
 
 # TODO:
 - [x] Add structure
