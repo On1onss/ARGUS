@@ -5,9 +5,10 @@
 ![GitHub issues](https://img.shields.io/github/issues/On1onss/ARGUS)
 ![GitHub licence](https://img.shields.io/github/license/On1onss/ARGUS)
 ![GitHub Repo stars](https://img.shields.io/github/stars/On1onss/ARGUS)
-___
-> (Automated Real-time Global Universal Surveillance) - Автоматизированная система глобального универсального мониторинга в реальном времени.
-___
+
+> [!IMPORTANT]
+> _(Automated Real-time Global Universal Surveillance) - Автоматизированная система глобального универсального мониторинга в реальном времени._
+
 
 # TODO:
 - [x] Add structure
