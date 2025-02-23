@@ -19,7 +19,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
-async def init_db(db: Annotated[AsyncSession, Depends(get_db)]) -> str:
+async def init_db(db: Annotated[AsyncSession, Depends(get_db)]):
     # Tables should be created with Alembic migrations
 
     user = await db.scalar(select(User).where(User.username == settings.FIRST_SUPERUSER))
@@ -31,7 +31,3 @@ async def init_db(db: Annotated[AsyncSession, Depends(get_db)]) -> str:
                                              is_admin=True, ))
 
         await db.commit()
-
-        return "SuperUser has been created"
-
-    return "SuperUser already exist"

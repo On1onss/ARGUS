@@ -1,6 +1,7 @@
 import secrets
 import warnings
 from typing import Literal
+from pathlib import Path
 
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -13,6 +14,8 @@ class Settings(BaseSettings):
         env_ignore_empty=True,
         extra="ignore",
     )
+
+    BASE_DIR: Path = Path(__file__).resolve().parent
 
     PROJECT_NAME: str
     VERSION: str

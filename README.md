@@ -29,20 +29,22 @@
 - [x] Create agent
 - [x] Create server
 - [x] Migrate from reqirements.txt to uv
-- [ ] Refactor server
+- [x] Refactor server main.py
 - [ ] Add Routers
   - [ ] Add auth
     - [x] Add db
-    - [ ] Add JWT auth
+    - [x] Add JWT auth
     - [ ] Add check expire token
     - [ ] Add crud user
     - [ ] ...
   - [ ] Chart host
+    - [x] Add chart route
     - [ ] ...
 - [ ] Add frontend
   - [ ] Dashboard
   - [ ] Profile
   - [ ] Node
+  - [ ] Chart
   - [ ] ...
 - [ ] Add docs
   - [ ] Installation
