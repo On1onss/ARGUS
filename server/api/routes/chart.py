@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse, StreamingResponse
 from starlette.responses import Response
 from pathlib import Path
 
-from server.config import settings
+from config import settings
 
 
 router = APIRouter(prefix="/chart", tags=["Chart"])

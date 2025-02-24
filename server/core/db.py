@@ -5,8 +5,8 @@ from sqlalchemy import select, insert
 from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 
-from server.config import settings
-from server.models.user import User
+from config import settings
+from models.user import User
 
 
 engine = create_async_engine(settings.DATABASE_URI, echo=True)

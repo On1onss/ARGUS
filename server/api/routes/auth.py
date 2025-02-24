@@ -10,10 +10,10 @@ from passlib.context import CryptContext
 from sqlalchemy import select, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from server.core.db import get_db
-from server.models.user import User
-from server.config import settings
-from server.schemas import CreateUser
+from core.db import get_db
+from models.user import User
+from config import settings
+from schemas import CreateUser
 
 router = APIRouter(prefix="/auth", tags=['Auth'])
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
