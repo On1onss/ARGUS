@@ -6,9 +6,10 @@ import uvicorn
 
 from fastapi import FastAPI, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from server.api.main import api_router
-from server.config import settings
-from server.core.db import init_db, get_db
+
+from api.main import api_router
+from config import settings
+from core.db import init_db, get_db
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
