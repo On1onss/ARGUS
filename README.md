@@ -79,7 +79,7 @@ DATABASE_URI="sqlite:///argus.db"
 
 ```shell
 cd server
-alembic upgrade head
+uv run alembic upgrade head
 ```
 
 ## _Run server_

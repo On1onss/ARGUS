@@ -6,7 +6,7 @@ ___
 ## _Init DB_
 
 ```shell
-alembic upgrade head
+uv run alembic upgrade head
 ```
 ...
 ___
