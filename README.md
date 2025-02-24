@@ -63,6 +63,8 @@ ___
 ENVIRONMENT=local
 
 PROJECT_NAME="ARGUS"
+VERSION="0.0.1"
+DESCRIPTION="Automated Real-time Global Universal Surveillance"
 
 # Backend
 SECRET_KEY="changeme" # Change this
@@ -71,8 +73,7 @@ FIRST_SUPERUSER_PASSWORD="changeme" # Change this
 
 # DB
 DB_NAME="argus.db"
-DATABASE_URI="sqlite:///argus.db"
-
+DATABASE_URI="sqlite+aiosqlite:///argus.db"
 ```
 
 ## _Init DB for server_
