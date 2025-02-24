@@ -17,7 +17,7 @@ from server.schemas import CreateUser
 
 router = APIRouter(prefix="/auth", tags=['Auth'])
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-oauth2_schema = OAuth2PasswordBearer(tokenUrl="auth/login")
+oauth2_schema = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login")
 ALGORITHM = "HS256"
 
 
@@ -105,10 +105,9 @@ async def login(db: Annotated[AsyncSession, Depends(get_db)],
 async def create_user(db: Annotated[AsyncSession, Depends(get_db)],
                       create_user: CreateUser,
                       user: dict = Depends(get_current_user)):
-
     if user["is_admin"]:
         await db.execute(insert(User).values(username=create_user.username,
-                                             hashed_password=bcrypt_context.hash(create_user.password),))
+                                             hashed_password=bcrypt_context.hash(create_user.password), ))
         await db.commit()
 
         return {
@@ -130,10 +129,20 @@ async def read_current_user(user: dict = Depends(get_current_user)):
 @router.get("/read_all_users")
 async def get_all_users(db: Annotated[AsyncSession, Depends(get_db)], user: dict = Depends(get_current_user)):
     if user["is_admin"]:
-
         users = await db.scalars(select(User).where(User.is_active == True))
 
         return users.all()
 
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                         detail="Permission denied")
+
+
+@router.get("/test/{username}")
+async def testing(db: Annotated[AsyncSession, Depends(get_db)], username: str):
+    user = await db.scalar(select(User).where(User.username == username))
+    return {
+        "user": user,
+        "username": username,
+        "not user": not user,
+        "not username": not username,
+    }

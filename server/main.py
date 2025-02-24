@@ -21,14 +21,14 @@ app = FastAPI(
     description=settings.DESCRIPTION,
 )
 
-
-@app.on_event("startup")
-def on_startup():
-    db = Annotated[AsyncSession, Depends(get_db)]
-    try:
-        init_db(db)
-    except ValueError:
-        pass
+# TODO: Refactor to lifespan?
+# @app.on_event("startup")
+# def on_startup():
+#     db = Annotated[AsyncSession, Depends(get_db)]
+#     try:
+#         init_db(db)
+#     except ValueError:
+#         pass
 
 
 @app.get("/")

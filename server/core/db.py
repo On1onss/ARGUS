@@ -10,7 +10,7 @@ from server.models.user import User
 
 
 engine = create_async_engine(settings.DATABASE_URI, echo=True)
-async_session_maker = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+async_session_maker = async_sessionmaker(bind=engine, expire_on_commit=False, class_=AsyncSession)
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 
@@ -21,8 +21,8 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 async def init_db(db: Annotated[AsyncSession, Depends(get_db)]):
     # Tables should be created with Alembic migrations
-
-    user = await db.scalar(select(User).where(User.username == settings.FIRST_SUPERUSER))
+    statement = select(User).where(User.username == str(settings.FIRST_SUPERUSER))
+    user = await db.scalar(statement=statement)
 
     if not user:
         await db.execute(insert(User).values(username=settings.FIRST_SUPERUSER,
