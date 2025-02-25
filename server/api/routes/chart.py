@@ -10,7 +10,7 @@ from pathlib import Path
 from config import settings
 
 
-router = APIRouter(prefix="/chart", tags=["Chart"])
+router = APIRouter(prefix="/charts", tags=["Chart"])
 # TODO: Replace templates to config.py?
 templates = Jinja2Templates(directory=str(Path(settings.BASE_DIR, 'src/pages')))
 
