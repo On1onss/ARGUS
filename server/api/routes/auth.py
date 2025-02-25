@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from typing import Annotated
 
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.responses import JSONResponse
 from jwt import ExpiredSignatureError
 from jose import jwt, JWTError
 from passlib.context import CryptContext
@@ -14,10 +15,11 @@ from core.db import get_db
 from models.user import User
 from config import settings
 from schemas import CreateUser
+from starlette.responses import RedirectResponse
 
 router = APIRouter(prefix="/auth", tags=['Auth'])
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-oauth2_schema = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login")
+oauth2_schema = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/token")
 ALGORITHM = "HS256"
 
 
@@ -84,9 +86,9 @@ async def create_access_token(username: str,
     return jwt.encode(encode, settings.SECRET_KEY, algorithm=ALGORITHM)
 
 
-@router.post("/login")
-async def login(db: Annotated[AsyncSession, Depends(get_db)],
-                form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+@router.post("/token", response_class=RedirectResponse)
+async def token(db: Annotated[AsyncSession, Depends(get_db)],
+                form_data: Annotated[OAuth2PasswordRequestForm, Depends()],):
     user = await authenticate_user(db,
                                    form_data.username,
                                    form_data.password)
@@ -95,10 +97,28 @@ async def login(db: Annotated[AsyncSession, Depends(get_db)],
                                       user.id,
                                       user.is_admin,
                                       expires_delta=timedelta(minutes=20))
+
     return {
         "access_token": token,
         "token_type": "bearer",
     }
+
+
+# TODO: Refactor
+@router.post("/login", response_class=RedirectResponse)
+async def login(db: Annotated[AsyncSession, Depends(get_db)],
+                form_data: Annotated[OAuth2PasswordRequestForm, Depends()],):
+    user = await authenticate_user(db,
+                                   form_data.username,
+                                   form_data.password)
+
+    token = await create_access_token(user.username,
+                                      user.id,
+                                      user.is_admin,
+                                      expires_delta=timedelta(minutes=20))
+    response = RedirectResponse(url="/docs", status_code=status.HTTP_302_FOUND)
+    response.set_cookie(key="Bearer", value=token)
+    return response
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
@@ -137,12 +157,9 @@ async def get_all_users(db: Annotated[AsyncSession, Depends(get_db)], user: dict
                         detail="Permission denied")
 
 
-@router.get("/test/{username}")
+@router.get("/me/{username}")
 async def testing(db: Annotated[AsyncSession, Depends(get_db)], username: str):
     user = await db.scalar(select(User).where(User.username == username))
     return {
         "user": user,
-        "username": username,
-        "not user": not user,
-        "not username": not username,
     }

@@ -9,9 +9,9 @@ from config import settings
 from starlette.responses import HTMLResponse
 
 router = APIRouter(tags=["Welcome Page"])
-templates = Jinja2Templates(directory=str(Path(settings.BASE_DIR, 'src/pages')))
+templates = Jinja2Templates(directory=str(Path(settings.BASE_DIR, 'src/pages/')))
 
 
 @router.get("/login", response_class=HTMLResponse)
-async def index(request: Request, ) -> Response:
-    return templates.TemplateResponse("login.html", {"request": request, }, )
+async def index(request: Request) -> Response:
+    return templates.TemplateResponse("login.html", {"request": request,}, )
