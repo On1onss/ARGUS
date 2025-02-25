@@ -6,6 +6,8 @@ import uvicorn
 
 from fastapi import FastAPI, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette.responses import RedirectResponse
+from starlette.staticfiles import StaticFiles
 
 from api.main import api_router
 from config import settings
@@ -22,6 +24,8 @@ app = FastAPI(
     description=settings.DESCRIPTION,
 )
 
+app.mount("/static", StaticFiles(directory="src/static"))
+
 # TODO: Refactor to lifespan?
 # @app.on_event("startup")
 # def on_startup():
@@ -32,12 +36,9 @@ app = FastAPI(
 #         pass
 
 
-@app.get("/")
-async def welcome() -> dict:
-    return {
-        "messasge": "Hello from ARGUS"
-    }
-
+@app.get("/", response_class=RedirectResponse, status_code=302)
+async def welcome():
+    return "/api/v1/login"
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
