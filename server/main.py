@@ -46,18 +46,22 @@ async def welcome():
 @app.middleware("http")
 async def exception_handler(request: Request, call_next):
     response = await call_next(request)
-    if response.status_code == 404:
+    if response.status_code == 200 or response.status_code == 302:
+        return response
+    elif response.status_code == 401:
+        return templates.TemplateResponse('home/login_fail.html', {'request': request})
+    elif response.status_code == 404:
         return templates.TemplateResponse('home/404.html', {'request': request})
     elif response.status_code == 500:
         return templates.TemplateResponse('500.html', {
             'request': request,
-            'detail': response.detail
+            'detail': response
         })
     else:
         # Generic error page
-        return templates.TemplateResponse('error.html', {
+        return templates.TemplateResponse('home/error.html', {
             'request': request,
-            'detail': response.detail
+            'detail': response
         })
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
