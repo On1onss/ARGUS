@@ -12,6 +12,7 @@ from fastapi.requests import Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.main import api_router
+from api.routes.auth import get_current_user
 from config import settings, templates
 from core.db import init_db, get_db
 
@@ -39,8 +40,18 @@ app.mount("/static", StaticFiles(directory="src/static"))
 
 
 @app.get("/", response_class=RedirectResponse, status_code=302)
-async def welcome():
-    return "/api/v1/login"
+async def welcome(request: Request):
+    token = request.cookies.get("token")
+
+    if not token:
+        return "/api/v1/login"
+
+    token = token.split()
+
+    user = await get_current_user(token[1])
+
+    if user["is_admin"]:
+        return templates.TemplateResponse("home/index.html", {"request": request, }, )
 
 
 @app.middleware("http")
@@ -50,18 +61,20 @@ async def exception_handler(request: Request, call_next):
         return response
     elif response.status_code == 401:
         return templates.TemplateResponse('home/login_fail.html', {'request': request})
+    elif response.status_code == 403:
+        return templates.TemplateResponse('home/403.html', {'request': request})
     elif response.status_code == 404:
         return templates.TemplateResponse('home/404.html', {'request': request})
     elif response.status_code == 500:
-        return templates.TemplateResponse('500.html', {
+        return templates.TemplateResponse('home/500.html', {
             'request': request,
-            'detail': response
+            # 'detail': response
         })
     else:
         # Generic error page
         return templates.TemplateResponse('home/error.html', {
             'request': request,
-            'detail': response
+            # 'detail': response
         })
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
