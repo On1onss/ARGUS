@@ -36,6 +36,7 @@
     - [x] Add JWT auth
     - [ ] Add check expire token
     - [ ] Add crud user
+    - [ ] Refactor routes authorization headers check to cookie check
     - [ ] ...
   - [ ] Chart host
     - [x] Add chart route
