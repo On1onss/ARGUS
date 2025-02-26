@@ -41,11 +41,22 @@
   - [ ] Chart host
     - [x] Add chart route
     - [ ] ...
+  - [ ] Add pages
+    - [x] Add login page
+    - [ ] Add profile page
+    - [ ] Add chart page
+    - [ ] ...
 - [ ] Add frontend
   - [ ] Dashboard
   - [ ] Profile
   - [ ] Node
   - [ ] Chart
+  - [ ] Exception pages
+    - [ ] 403 page
+    - [ ] 500 page
+    - [ ] 404 page
+    - [ ] 401 page
+    - [ ] ...
   - [ ] ...
 - [ ] Add docs
   - [ ] Installation
