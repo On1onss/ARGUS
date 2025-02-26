@@ -5,12 +5,14 @@ from typing import Annotated
 import uvicorn
 
 from fastapi import FastAPI, Depends
+from fastapi.exceptions import HTTPException
+from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.requests import Request
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette.responses import RedirectResponse
-from starlette.staticfiles import StaticFiles
 
 from api.main import api_router
-from config import settings
+from config import settings, templates
 from core.db import init_db, get_db
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -39,6 +41,24 @@ app.mount("/static", StaticFiles(directory="src/static"))
 @app.get("/", response_class=RedirectResponse, status_code=302)
 async def welcome():
     return "/api/v1/login"
+
+
+@app.middleware("http")
+async def exception_handler(request: Request, call_next):
+    response = await call_next(request)
+    if response.status_code == 404:
+        return templates.TemplateResponse('home/404.html', {'request': request})
+    elif response.status_code == 500:
+        return templates.TemplateResponse('500.html', {
+            'request': request,
+            'detail': response.detail
+        })
+    else:
+        # Generic error page
+        return templates.TemplateResponse('error.html', {
+            'request': request,
+            'detail': response.detail
+        })
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
