@@ -1,18 +1,14 @@
 import httpx
 
 from fastapi import APIRouter
-from fastapi.templating import Jinja2Templates
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.responses import Response
-from pathlib import Path
 
-from config import settings
+from config import settings, templates
 
 
 router = APIRouter(prefix="/charts", tags=["Chart"])
-# TODO: Replace templates to config.py?
-templates = Jinja2Templates(directory=str(Path(settings.BASE_DIR, 'src/pages')))
 
 
 async def get_data(host):

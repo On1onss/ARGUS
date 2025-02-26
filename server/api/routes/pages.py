@@ -1,15 +1,11 @@
-from pathlib import Path
-
 from fastapi import APIRouter
-from fastapi.templating import Jinja2Templates
 from fastapi.requests import Request
 from fastapi.responses import Response, HTMLResponse
 
-from config import settings
+from config import settings, templates
 from api.routes.auth import get_current_user
 
 router = APIRouter(tags=["Welcome Page"])
-templates = Jinja2Templates(directory=str(Path(settings.BASE_DIR, 'src/pages/')))
 
 
 @router.get("/login", response_class=HTMLResponse)
