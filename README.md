@@ -40,6 +40,7 @@
     - [ ] ...
   - [ ] Chart host
     - [x] Add chart route
+    - [ ] Add check host
     - [ ] ...
   - [ ] Add pages
     - [x] Add login page
@@ -56,6 +57,7 @@
     - [ ] 500 page
     - [ ] 404 page
     - [ ] 401 page
+    - [ ] host not found
     - [ ] ...
   - [ ] ...
 - [ ] Add docs

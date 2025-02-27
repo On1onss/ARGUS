@@ -19,7 +19,7 @@ async def get_data(host):
 
 @router.get("/{host}", response_class=HTMLResponse)
 async def index(request: Request, host) -> Response:
-    return templates.TemplateResponse("index.html", {"request": request, "host": host}, )
+    return templates.TemplateResponse("home/index.html", {"request": request, "host": host}, )
 
 
 @router.get("/{host}/chart-data")
