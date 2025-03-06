@@ -1,3 +1,4 @@
+import uuid
 from datetime import timedelta, datetime, timezone
 
 from fastapi import APIRouter, Depends, status, HTTPException
@@ -26,7 +27,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_schema)]):
     try:
         paylaod = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
         username: str = paylaod.get("sub")
-        user_id: int = paylaod.get("id")
+        user_id: uuid.UUID = paylaod.get("id")
         is_admin: bool = paylaod.get("is_admin")
         expire = paylaod.get("exp")
 
@@ -39,7 +40,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_schema)]):
                                 detail="No access token supplied")
 
         return {
-            "id": user_id,
+            "id": str(user_id),
             "username": username,
             "is_admin": is_admin
 
@@ -69,11 +70,11 @@ async def authenticate_user(db: Annotated[AsyncSession, Depends(get_db)],
 
 
 async def create_access_token(username: str,
-                              user_id: int,
+                              user_id: uuid.UUID,
                               is_admin: bool,
                               expires_delta: timedelta):
     encode = {
-        "id": user_id,
+        "id": str(user_id),
         "sub": username,
         "is_admin": is_admin,
     }
@@ -124,7 +125,8 @@ async def create_user(db: Annotated[AsyncSession, Depends(get_db)],
                       create_user: CreateUser,
                       user: dict = Depends(get_current_user)):
     if user["is_admin"]:
-        await db.execute(insert(User).values(username=create_user.username,
+        await db.execute(insert(User).values(id=uuid.uuid4(),
+                                             username=create_user.username,
                                              hashed_password=bcrypt_context.hash(create_user.password), ))
         await db.commit()
 

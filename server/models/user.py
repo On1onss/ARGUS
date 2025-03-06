@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, String, Boolean, Uuid
 
 from models.base import Base
 
@@ -7,7 +7,7 @@ class User(Base):
 
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Uuid, primary_key=True, unique=True)
     username = Column(String, unique=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
