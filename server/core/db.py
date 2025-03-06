@@ -1,3 +1,4 @@
+import uuid
 from typing import Annotated, AsyncGenerator
 
 from fastapi import Depends
@@ -25,7 +26,8 @@ async def init_db(db: Annotated[AsyncSession, Depends(get_db)]):
     user = await db.scalar(statement=statement)
 
     if not user:
-        await db.execute(insert(User).values(username=settings.FIRST_SUPERUSER,
+        await db.execute(insert(User).values(id=uuid.uuid4(),
+                                             username=settings.FIRST_SUPERUSER,
                                              hashed_password=bcrypt_context.hash(settings.FIRST_SUPERUSER_PASSWORD),
                                              is_active=True,
                                              is_admin=True, ))
