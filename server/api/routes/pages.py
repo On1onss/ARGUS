@@ -1,7 +1,7 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from fastapi.requests import Request
 
-from config import settings, templates
+from config import settings
 from api.routes.auth import get_current_user
 from starlette import status
 
@@ -16,16 +16,7 @@ async def login(request: Request):# -> Response:
 
 
 @router.get("/profile")
-async def profile(request: Request):
-    token = request.cookies.get("token")
-
-    if not token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                            detail="Could not validate user")
-
-    token = token.split()
-    user = await get_current_user(token[1])
-
+async def profile(user: dict = Depends(get_current_user)):
     if user["is_admin"]:
         return {
             "message": "profile"
@@ -36,16 +27,7 @@ async def profile(request: Request):
 
 
 @router.get("/dashboard")
-async def profile(request: Request):
-    token = request.cookies.get("token")
-
-    if not token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                            detail="Could not validate user")
-
-    token = token.split()
-    user = await get_current_user(token[1])
-
+async def profile(user: dict = Depends(get_current_user)):
     if user["is_admin"]:
         return {"message": "Dashboard"}
 

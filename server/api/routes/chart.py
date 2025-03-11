@@ -3,7 +3,7 @@ import httpx
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 
-from config import settings, templates
+from config import settings
 
 
 router = APIRouter(prefix="/charts", tags=["Chart"])
