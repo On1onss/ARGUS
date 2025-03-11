@@ -172,3 +172,4 @@ cython_debug/
 
 # Other
 test/
+frontend/src/client_template/
