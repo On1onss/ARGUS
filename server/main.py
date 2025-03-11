@@ -9,16 +9,17 @@ from fastapi.exceptions import HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.requests import Request
+from fastapi.middleware.cors import  CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.main import api_router
-from api.routes.auth import get_current_user
 from config import settings, templates
 from core.db import init_db, get_db
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
+origins = ['http://localhost:5173']
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -27,7 +28,14 @@ app = FastAPI(
     description=settings.DESCRIPTION,
 )
 
-app.mount("/static", StaticFiles(directory="src/static"))
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # TODO: Refactor to lifespan?
 # @app.on_event("startup")
@@ -39,43 +47,35 @@ app.mount("/static", StaticFiles(directory="src/static"))
 #         pass
 
 
-@app.get("/", response_class=RedirectResponse, status_code=302)
-async def welcome(request: Request):
-    token = request.cookies.get("token")
+@app.get("/")
+async def welcome():
+    return {
+        "message": "Hello from ARGUS!"
+    }
 
-    if not token:
-        return "/api/v1/login"
-
-    token = token.split()
-
-    user = await get_current_user(token[1])
-
-    if user["is_admin"]:
-        return templates.TemplateResponse("home/index.html", {"request": request, }, )
-
-
-@app.middleware("http")
-async def exception_handler(request: Request, call_next):
-    response = await call_next(request)
-    if response.status_code == 200 or response.status_code == 302:
-        return response
-    elif response.status_code == 401:
-        return templates.TemplateResponse('home/login_fail.html', {'request': request})
-    elif response.status_code == 403:
-        return templates.TemplateResponse('home/403.html', {'request': request})
-    elif response.status_code == 404:
-        return templates.TemplateResponse('home/404.html', {'request': request})
-    elif response.status_code == 500:
-        return templates.TemplateResponse('home/500.html', {
-            'request': request,
-            # 'detail': response
-        })
-    else:
-        # Generic error page
-        return templates.TemplateResponse('home/error.html', {
-            'request': request,
-            # 'detail': response
-        })
+# TODO: Change or delete?
+# @app.middleware("http")
+# async def exception_handler(request: Request, call_next):
+#     response = await call_next(request)
+#     if response.status_code == 200 or response.status_code == 302:
+#         return response
+#     elif response.status_code == 401:
+#         return templates.TemplateResponse('home/login_fail.html', {'request': request})
+#     elif response.status_code == 403:
+#         return templates.TemplateResponse('home/403.html', {'request': request})
+#     elif response.status_code == 404:
+#         return templates.TemplateResponse('home/404.html', {'request': request})
+#     elif response.status_code == 500:
+#         return templates.TemplateResponse('home/500.html', {
+#             'request': request,
+#             # 'detail': response
+#         })
+#     else:
+#         # Generic error page
+#         return templates.TemplateResponse('home/error.html', {
+#             'request': request,
+#             # 'detail': response
+#         })
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 

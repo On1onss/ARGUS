@@ -5,7 +5,6 @@ from pathlib import Path
 
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from fastapi.templating import Jinja2Templates
 from typing_extensions import Self
 
 
@@ -55,4 +54,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-templates = Jinja2Templates(directory=str(Path(settings.BASE_DIR, 'src/pages/')))

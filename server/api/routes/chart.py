@@ -1,9 +1,7 @@
 import httpx
 
 from fastapi import APIRouter
-from fastapi.requests import Request
-from fastapi.responses import HTMLResponse, StreamingResponse
-from fastapi.responses import Response
+from fastapi.responses import StreamingResponse
 
 from config import settings, templates
 
@@ -17,9 +15,11 @@ async def get_data(host):
         yield response.json()
 
 
-@router.get("/{host}", response_class=HTMLResponse)
-async def index(request: Request, host) -> Response:
-    return templates.TemplateResponse("home/index.html", {"request": request, "host": host}, )
+@router.get("/{host}")
+async def index(host):
+    return {
+        "message": host
+    }
 
 
 @router.get("/{host}/chart-data")
