@@ -34,30 +34,28 @@
   - [ ] Add auth
     - [x] Add db
     - [x] Add JWT auth
-    - [ ] Add check expire token
+    - [x] Add check expire token
     - [ ] Add crud user
-    - [ ] Refactor routes authorization headers check to cookie check
     - [ ] ...
   - [ ] Chart host
     - [x] Add chart route
-    - [ ] Add check host
+    - [x] Add check host
     - [ ] ...
   - [ ] Add pages
     - [x] Add login page
     - [ ] Add profile page
-    - [ ] Add chart page
+    - [x] Add chart page
     - [ ] ...
 - [ ] Add frontend
-  - [ ] Dashboard
+  - [x] Dashboard
   - [ ] Profile
   - [ ] Node
-  - [ ] Chart
+  - [x] Chart
   - [ ] Exception pages
     - [ ] 403 page
     - [ ] 500 page
     - [ ] 404 page
     - [ ] 401 page
-    - [ ] host not found
     - [ ] ...
   - [ ] ...
 - [ ] Add docs
