@@ -7,10 +7,10 @@ import {
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { ApiError, OpenAPI } from "./client";
-import { CustomProvider } from "./components/ui/provider";
+import {CustomProvider} from "./components/ui/provider.tsx";
 
-// OpenAPI.BASE = import.meta.env.VITE_API_URL
-// OpenAPI.BASE = "http://localhost:8000/"
+
+OpenAPI.BASE = import.meta.env.VITE_API_URL
 OpenAPI.TOKEN = async () => {
     return localStorage.getItem("access_token") || ""
 }
