@@ -1,4 +1,4 @@
-import { Container, Image, Input } from "@chakra-ui/react"
+import {Card, Container, Image, Input} from "@chakra-ui/react"
 import {
   // Link as RouterLink,
   createFileRoute,
@@ -55,7 +55,6 @@ function Login() {
       // error is handled by useAuth hook
     }
   }
-  console.log(errors)
   return (
     <>
       <Container
@@ -68,6 +67,8 @@ function Login() {
         gap={4}
         centerContent
       >
+        <Card.Root size="lg">
+          <Card.Body>
         <Image
           src={Logo}
           alt="ARGUS logo"
@@ -76,11 +77,13 @@ function Login() {
           alignSelf="center"
           mb={4}
         />
+
+
         <Field
           invalid={!!errors.username}
           errorText={errors.username?.message || !!error}
         >
-          <InputGroup w="100%" startElement={<FaUserAstronaut />}>
+          <InputGroup w="100%" startElement={<FaUserAstronaut />} mb={4}>
             <Input
               id="username"
               {...register("username", {
@@ -89,8 +92,10 @@ function Login() {
               })}
               placeholder="Username"
               type="text"
+              maxLength={20}
             />
           </InputGroup>
+
         </Field>
         <PasswordInput
           type="password"
@@ -99,12 +104,16 @@ function Login() {
           placeholder="Password"
           errors={errors}
         />
+
         {/*<RouterLink to="/recover-password" className="main-link">*/}
         {/*  Forgot Password?*/}
         {/*</RouterLink>*/}
-        <Button variant="solid" type="submit" loading={isSubmitting} size="md">
+        <Button variant="solid" type="submit" loading={isSubmitting} size="md" mt={5}>
           Log In
         </Button>
+          </Card.Body>
+        </Card.Root>
+
         {/*<Text>*/}
         {/*  Don't have an account?{" "}*/}
         {/*  <RouterLink to="/signup" className="main-link">*/}
