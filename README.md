@@ -1,3 +1,6 @@
+<p align="center">
+<img src="frontend/src/assets/logo_mini.png" width="300">
+</p>
 <h1 align="center">ARGUS</h1>
 
 <!--A block of information about the repository in badges-->
