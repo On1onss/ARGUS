@@ -1,4 +1,6 @@
 import httpx
+import json
+import ast
 
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
@@ -10,9 +12,15 @@ router = APIRouter(prefix="/charts", tags=["Chart"])
 
 
 async def get_data(host):
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f'http://{host}:8001')
-        yield response.json()
+    client = httpx.AsyncClient()
+    try:
+        async with client.stream('GET', f'http://{host}:8001') as response:
+            response.raise_for_status()
+            async for chunk in response.aiter_text():
+                yield ast.literal_eval(chunk)
+    except httpx.HTTPError:
+        yield json.dumps({"error": "Host is not available"})
+
 
 
 @router.get("/{host}")
