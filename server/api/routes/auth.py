@@ -5,8 +5,7 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from typing import Annotated
 
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jwt import ExpiredSignatureError
-from jose import jwt, JWTError
+from jose import jwt, JWTError, ExpiredSignatureError
 from passlib.context import CryptContext
 from sqlalchemy import select, insert
 from sqlalchemy.ext.asyncio import AsyncSession
