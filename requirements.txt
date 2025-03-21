@@ -1,0 +1,5 @@
+uv
+alembic
+pydantic
+pydantic-settings
+aiosqlite

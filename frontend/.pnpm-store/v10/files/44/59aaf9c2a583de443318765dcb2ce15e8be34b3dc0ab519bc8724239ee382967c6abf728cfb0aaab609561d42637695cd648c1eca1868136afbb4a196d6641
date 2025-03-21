@@ -1,0 +1,12 @@
+import type { FileInfo } from "../types/index.js";
+export declare const sendRequest: ({ init, redirects, timeout, url, }: {
+    init?: RequestInit;
+    redirects?: string[];
+    timeout?: number;
+    url: URL | string;
+}) => Promise<{
+    response: Response;
+}>;
+export declare const urlResolver: {
+    handler: (file: FileInfo, arrayBuffer?: ArrayBuffer) => Promise<void>;
+};

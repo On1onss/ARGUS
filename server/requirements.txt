@@ -1,0 +1,12 @@
+uv
+alembic
+pydantic
+pydantic-settings
+aiosqlite
+fastapi
+passlib
+sqlalchemy
+uvicorn
+python-jose
+python-multipart
+httpx
