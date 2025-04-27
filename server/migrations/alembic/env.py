@@ -21,6 +21,7 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from models.user import User
+from models.host import Host
 from models.base import Base
 from config import settings
 
