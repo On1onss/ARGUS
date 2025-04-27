@@ -41,19 +41,19 @@ async def get_host(host: str,
 @router.get("/")
 async def get_all_hosts(db: Annotated[AsyncSession, Depends(get_db)]):
     hosts = await db.scalars(select(Host))
-    return_list = []
+    # return_list = []
+    #
+    # for host in hosts.all():
+    #     return_list.append(host)
+    #
+    # for host in return_list:
+    #     check = check_available("https://" + host.host)
+    #     if check:
+    #         host.available = True
+    #     else:
+    #         host.available = False
 
-    for host in hosts.all():
-        return_list.append(host)
-
-    for host in return_list:
-        check = check_available("https://" + host.host)
-        if check:
-            host.available = True
-        else:
-            host.available = False
-
-    return {"hosts": return_list}
+    return {"hosts": hosts.all()}
 
 
 
