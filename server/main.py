@@ -10,14 +10,14 @@ from fastapi.middleware.cors import  CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.main import api_router
+from api.mobile.main import api_router_mobile
 from config import settings
 from core.db import init_db, get_db
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
-origins = ['http://localhost:5173']
-
+origins = ['http://localhost:5173',]
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
@@ -81,6 +81,10 @@ async def welcome():
 #         }
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
+app.include_router(api_router_mobile, prefix=settings.API_V2_STR)
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8000, host="0.0.0.0", reload=True)
+    uvicorn.run("main:app",
+                port=8000,
+                host="0.0.0.0",
+                reload=True)

@@ -6,10 +6,10 @@ import time
 from fastapi import APIRouter
 
 
-router = APIRouter(prefix="/health_check", tags=["Health"])
+router = APIRouter(prefix="/health_check", tags=["Mobile"])
 
 
-@router.get("/{host}")
+@router.get("/health_check/{host}")
 def health_check(host):
     t0 = time.time()
     try:
