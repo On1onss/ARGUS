@@ -1,3 +1,4 @@
+
 <p align="center">
 <img src="frontend/src/assets/logo_mini.png" width="300">
 </p>
@@ -80,7 +81,6 @@ ENVIRONMENT=local
 PROJECT_NAME="ARGUS"
 VERSION="0.0.1"
 DESCRIPTION="Automated Real-time Global Universal Surveillance"
-
 # Backend
 SECRET_KEY="changeme" # Change this
 FIRST_SUPERUSER="changeme" # Change this
