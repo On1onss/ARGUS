@@ -9,20 +9,18 @@ from fastapi import APIRouter
 router = APIRouter(prefix="/health_check", tags=["Mobile"])
 
 
-@router.get("/health_check/{host}")
-def health_check(host):
+@router.get("/{host}")
+async def health_check(host):
     t0 = time.time()
     try:
-        response = httpx.head(f'http://{host}/')
+        response = httpx.head(f'https://{host}/')
         # if response.json()["error"]:
         #     return json.dumps({"error": "Host is not available"})
-        result = {
-            "status code": response.status_code,
-            "value": f"{(time.time() - t0)*1000:.1f}",
-            "time": datetime.now().strftime("%H:%M:%S")
-        }
-        return result
+        if 200 <= response.status_code < 400:
+            return {"message": "OK"}
+        else:
+            return {"message": "Bad Request"}
     except httpx.HTTPError:
-        return {"error": "Host is not available"}
+        return {"message": "Host is not available"}
 
 

@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutIndexImport } from './routes/_layout/index'
+import { Route as LayoutHealthcheckHostImport } from './routes/_layout/health_check/$host'
 import { Route as LayoutChartsHostImport } from './routes/_layout/charts/$host'
 
 // Create/Update Routes
@@ -32,6 +33,12 @@ const LayoutRoute = LayoutImport.update({
 const LayoutIndexRoute = LayoutIndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutHealthcheckHostRoute = LayoutHealthcheckHostImport.update({
+  id: '/health_check/$host',
+  path: '/health_check/$host',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -73,6 +80,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutChartsHostImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/health_check/$host': {
+      id: '/_layout/health_check/$host'
+      path: '/health_check/$host'
+      fullPath: '/health_check/$host'
+      preLoaderRoute: typeof LayoutHealthcheckHostImport
+      parentRoute: typeof LayoutImport
+    }
   }
 }
 
@@ -81,11 +95,13 @@ declare module '@tanstack/react-router' {
 interface LayoutRouteChildren {
   LayoutIndexRoute: typeof LayoutIndexRoute
   LayoutChartsHostRoute: typeof LayoutChartsHostRoute
+  LayoutHealthcheckHostRoute: typeof LayoutHealthcheckHostRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutIndexRoute: LayoutIndexRoute,
   LayoutChartsHostRoute: LayoutChartsHostRoute,
+  LayoutHealthcheckHostRoute: LayoutHealthcheckHostRoute,
 }
 
 const LayoutRouteWithChildren =
@@ -96,12 +112,14 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/': typeof LayoutIndexRoute
   '/charts/$host': typeof LayoutChartsHostRoute
+  '/health_check/$host': typeof LayoutHealthcheckHostRoute
 }
 
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof LayoutIndexRoute
   '/charts/$host': typeof LayoutChartsHostRoute
+  '/health_check/$host': typeof LayoutHealthcheckHostRoute
 }
 
 export interface FileRoutesById {
@@ -110,14 +128,21 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_layout/': typeof LayoutIndexRoute
   '/_layout/charts/$host': typeof LayoutChartsHostRoute
+  '/_layout/health_check/$host': typeof LayoutHealthcheckHostRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/login' | '/' | '/charts/$host'
+  fullPaths: '' | '/login' | '/' | '/charts/$host' | '/health_check/$host'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/charts/$host'
-  id: '__root__' | '/_layout' | '/login' | '/_layout/' | '/_layout/charts/$host'
+  to: '/login' | '/' | '/charts/$host' | '/health_check/$host'
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/login'
+    | '/_layout/'
+    | '/_layout/charts/$host'
+    | '/_layout/health_check/$host'
   fileRoutesById: FileRoutesById
 }
 
@@ -149,7 +174,8 @@ export const routeTree = rootRoute
       "filePath": "_layout.tsx",
       "children": [
         "/_layout/",
-        "/_layout/charts/$host"
+        "/_layout/charts/$host",
+        "/_layout/health_check/$host"
       ]
     },
     "/login": {
@@ -161,6 +187,10 @@ export const routeTree = rootRoute
     },
     "/_layout/charts/$host": {
       "filePath": "_layout/charts/$host.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/health_check/$host": {
+      "filePath": "_layout/health_check/$host.tsx",
       "parent": "/_layout"
     }
   }

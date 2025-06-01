@@ -10,7 +10,8 @@ import { ApiError, OpenAPI } from "./client";
 import {CustomProvider} from "./components/ui/provider.tsx";
 
 
-OpenAPI.BASE = import.meta.env.VITE_API_URL
+// OpenAPI.BASE = import.meta.env.VITE_API_URL
+OpenAPI.BASE = "http://localhost:8000"
 OpenAPI.TOKEN = async () => {
     return localStorage.getItem("access_token") || ""
 }

@@ -32,17 +32,19 @@ const Sidebar = () => {
       >
         <DrawerBackdrop />
         <DrawerTrigger asChild>
+          <Box>
           <IconButton
             variant="ghost"
             color="inherit"
             display={{ base: "flex", md: "none" }}
             aria-label="Open Menu"
-            position="absolute"
+            position='absolute'
             zIndex="100"
-            m={4}
+            p={4}
           >
             <FaBars />
           </IconButton>
+          </Box>
         </DrawerTrigger>
         <DrawerContent maxW="xs">
           <DrawerCloseTrigger />
@@ -79,13 +81,11 @@ const Sidebar = () => {
 
       <Box
         display={{ base: "none", md: "flex" }}
-        position="sticky"
+        position="relative"
         bg="bg.subtle"
         top={0}
-        // minW="2xs"
-        h="100vh"
+        minW="3xs"
         p={4}
-        w="30vh"
       >
         <Box w="100%">
           <SidebarItems />

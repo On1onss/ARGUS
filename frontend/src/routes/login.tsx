@@ -1,6 +1,5 @@
 import {Card, Container, Image, Input} from "@chakra-ui/react"
 import {
-  // Link as RouterLink,
   createFileRoute,
   redirect,
 } from "@tanstack/react-router"
@@ -52,7 +51,6 @@ function Login() {
     try {
       await loginMutation.mutateAsync(data)
     } catch {
-      // error is handled by useAuth hook
     }
   }
   return (
@@ -105,21 +103,12 @@ function Login() {
           errors={errors}
         />
 
-        {/*<RouterLink to="/recover-password" className="main-link">*/}
-        {/*  Forgot Password?*/}
-        {/*</RouterLink>*/}
+
         <Button variant="solid" type="submit" loading={isSubmitting} size="md" mt={5}>
           Log In
         </Button>
           </Card.Body>
         </Card.Root>
-
-        {/*<Text>*/}
-        {/*  Don't have an account?{" "}*/}
-        {/*  <RouterLink to="/signup" className="main-link">*/}
-        {/*    Sign Up*/}
-        {/*  </RouterLink>*/}
-        {/*</Text>*/}
       </Container>
     </>
   )

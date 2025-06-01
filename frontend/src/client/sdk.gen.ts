@@ -2,13 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { OpenAPI } from './core/OpenAPI';
-import { request as __request } from './core/request';
-import type { CancelablePromise } from "./core/CancelablePromise"
+import {OpenAPI} from './core/OpenAPI';
+import {request as __request} from './core/request';
+import type {CancelablePromise} from "./core/CancelablePromise"
 import {
     type CreateUserApiV1AuthRegisterPostData,
     type Token,
-    type TokenApiV1AuthTokenPostData, User
+    type TokenApiV1AuthTokenPostData, User, CreateHost
 } from './types.gen.ts'
 
 export class AuthService {
@@ -31,6 +31,7 @@ export class AuthService {
             },
         });
     }
+
     /**
      * Create User
      * @returns any Successful Response
@@ -50,6 +51,7 @@ export class AuthService {
             },
         });
     }
+
     /**
      * Read Current User
      * @returns any Successful Response
@@ -61,6 +63,7 @@ export class AuthService {
             url: '/api/v1/auth/read_current_user',
         });
     }
+
     /**
      * Get All Users
      * @returns any Successful Response
@@ -72,6 +75,7 @@ export class AuthService {
             url: '/api/v1/auth/read_all_users',
         });
     }
+
     /**
      * Testing
      * @param username
@@ -115,6 +119,7 @@ export class ChartService {
             },
         });
     }
+
     /**
      * Chart Data
      * @param host
@@ -163,6 +168,7 @@ export class PagesService {
             url: '/api/v1/login',
         });
     }
+
     /**
      * Profile
      * @returns any Successful Response
@@ -174,6 +180,7 @@ export class PagesService {
             url: '/api/v1/profile',
         });
     }
+
     /**
      * Profile
      * @returns any Successful Response
@@ -183,6 +190,131 @@ export class PagesService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/dashboard',
+        });
+    }
+}
+
+
+export class HostsService {
+    /**
+     * Get Host
+     * @param host
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static getHostApiV1HostsHostGet(
+        host: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/hosts/{host}',
+            path: {
+                'host': host,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Update Host
+     * @param host
+     * @param requestBody
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static updateHostApiV1HostsHostPost(
+        host: string,
+        requestBody: CreateHost,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/hosts/{host}',
+            path: {
+                'host': host,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Delete Host
+     * @param host
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static deleteHostApiV1HostsHostDelete(
+        host: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/v1/hosts/{host}',
+            path: {
+                'host': host,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Get All Hosts
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static getAllHostsApiV1HostsGet(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: 'http://localhost:8000/api/v1/',
+        });
+    }
+
+    /**
+     * Create Host
+     * @param requestBody
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static createHostApiV1HostsPost(
+        requestBody: CreateHost,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/hosts/',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+}
+
+export class HealthService {
+    /**
+     * Health Check
+     * @param host
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static healthCheckApiV1HealthCheckHostGet(
+        host: any,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/health_check/{host}',
+            path: {
+                'host': host,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
         });
     }
 }

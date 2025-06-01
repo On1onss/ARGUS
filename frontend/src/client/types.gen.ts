@@ -248,3 +248,9 @@ export type ProfileApiV1DashboardGetResponses = {
 export type ClientOptions = {
     baseURL: 'http://localhost:8000' | (string & {});
 };
+
+export type CreateHost = {
+    host: string;
+    description: string;
+    last_visit: string;
+};

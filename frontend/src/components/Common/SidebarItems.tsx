@@ -36,13 +36,16 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
         px={4}
         py={2}
         _hover={{
-          background: "gray.subtle",
+          // background: "gray.subtle",
+            backgroundColor: "purple.600",
         }}
         alignItems="center"
         fontSize="sx"
+        // shadow="md"
+        borderRadius="md"
       >
         <Icon as={icon} alignSelf="center" />
-        <Text ml={2}>{title}</Text>
+        <Text >{title}</Text>
       </Flex>
     </RouterLink>
   ))

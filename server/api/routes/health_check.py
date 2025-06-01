@@ -1,28 +1,23 @@
-from datetime import datetime
-import json
 import httpx
-import time
 
+from datetime import datetime
 from fastapi import APIRouter
-
 
 router = APIRouter(prefix="/health_check", tags=["Health"])
 
 
 @router.get("/{host}")
-def health_check(host):
-    t0 = time.time()
+async def health_check(host):
     try:
-        response = httpx.head(f'http://{host}/')
-        # if response.json()["error"]:
-        #     return json.dumps({"error": "Host is not available"})
-        result = {
-            "status code": response.status_code,
-            "value": f"{(time.time() - t0)*1000:.1f}",
-            "time": datetime.now().strftime("%H:%M:%S")
-        }
-        return result
+        response = httpx.head(f'http://{host}/', verify=False)
+
+        if 200 <= response.status_code < 400:
+            return {
+                "message": "OK",
+                "value": f"{response.elapsed.total_seconds():.3f}",
+                "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+        else:
+            return {"message": "Bad Request"}
     except httpx.HTTPError:
         return {"error": "Host is not available"}
-
-

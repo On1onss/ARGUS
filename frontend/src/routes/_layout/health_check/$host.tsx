@@ -10,10 +10,10 @@ import {
     PointElement,
     Filler,
 } from "chart.js";
-import {Line} from "react-chartjs-2";
-import {Card, Heading, Text} from "@chakra-ui/react";
-import {useEffect, useState,} from "react";
-import {fetchEventSource} from '@microsoft/fetch-event-source';
+import { Line } from "react-chartjs-2";
+import {Card, CardBody, CardHeader, Heading, Text} from "@chakra-ui/react";
+import {useEffect, useState, } from "react";
+import { fetchEventSource } from '@microsoft/fetch-event-source';
 
 ChartJS.register(
     Title,
@@ -27,7 +27,7 @@ ChartJS.register(
 );
 
 
-export const Route = createFileRoute("/_layout/charts/$host")({
+export const Route = createFileRoute("/_layout/health_check/$host")({
     component: Charts,
 })
 
@@ -39,7 +39,7 @@ function Charts() {
         data: {
             labels: Array(),
             datasets: [{
-                label: "Memory",
+                label: "Response",
                 backgroundColor: 'rgba(147,51,234, 1)',
                 borderColor: 'rgba(147, 51, 234,1)',
                 data: Array(),
@@ -59,7 +59,7 @@ function Charts() {
                     display: true,
                     title: {
                         display: true,
-                        text: 'Value'
+                        text: 'ms'
                     }
                 }
             }
@@ -68,8 +68,9 @@ function Charts() {
 
 
     const [chartOptions, setChartOptions] = useState(config.data)
-    const {host} = Route.useParams()
-    const url = `http://localhost:8000/api/v1/charts/${host}/chart-data`
+    const { host } = Route.useParams()
+    const url = `http://localhost:8000/api/v1/health_check/${host}`
+
     const [error, setError] = useState("");
 
     // Update Chart Data
@@ -82,7 +83,7 @@ function Charts() {
 
     useEffect(() => {
         const controller = new AbortController();
-        const {signal} = controller;
+        const { signal } = controller;
 
         const fetchData = async () => {
 
@@ -121,18 +122,19 @@ function Charts() {
 
     }, []);
 
+
     return (
-        <Card.Root>
-            <Card.Header pb="0">
-                <Heading as="h4" fontWeight="medium" size="md" id="host">
-                    {chartOptions.datasets[0].label}
-                </Heading>
-            </Card.Header>
-            <Card.Body>
-                {!error && <Line id="Chart" options={config.options} data={chartOptions} height="inherit"/>}
-                {error && <Text>{error}</Text>}
-            </Card.Body>
-        </Card.Root>
+            <Card.Root>
+                <CardHeader pb="0">
+                    <Heading as="h4" fontWeight="medium" size="md" id="host">
+                        {host}
+                    </Heading>
+                </CardHeader>
+                <CardBody>
+                    {!error && <Line id="Chart" options={config.options} data={chartOptions} height="inherit" />}
+                    {error && <Text>{error}</Text>}
+                </CardBody>
+            </Card.Root>
     )
 }
 

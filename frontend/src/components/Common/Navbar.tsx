@@ -5,7 +5,7 @@ import Logo from "../../assets/logo_mini.png"
 import UserMenu from "./UserMenu"
 
 function Navbar() {
-  const display = useBreakpointValue({ base: "none", md: "flex" })
+  const display = useBreakpointValue({ base: "flex", md: "flex" })
 
   return (
     <Flex
