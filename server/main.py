@@ -1,40 +1,94 @@
 import logging
 import sys
-import httpx
+from typing import Annotated
+
 import uvicorn
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.requests import Request
-from fastapi.responses import HTMLResponse, StreamingResponse
-from fastapi.templating import Jinja2Templates
-from starlette.responses import Response
+from fastapi.middleware.cors import  CORSMiddleware
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from api.main import api_router
+from api.mobile.main import api_router_mobile
+from config import settings
+from core.db import init_db, get_db
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
-templates = Jinja2Templates(directory="src/pages")
+origins = ['http://localhost:5173',]
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    version=settings.VERSION,
+    description=settings.DESCRIPTION,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
-async def get_data(host):
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f'http://{host}:8001')
-        yield response.json()
+# TODO: Refactor to lifespan?
+# @app.on_event("startup")
+# def on_startup():
+#     db = Annotated[AsyncSession, Depends(get_db)]
+#     try:
+#         init_db(db)
+#     except ValueError:
+#         pass
 
 
-@app.get("/{host}", response_class=HTMLResponse)
-async def index(request: Request, host) -> Response:
-    return templates.TemplateResponse("index.html", {"request": request, "host": host}, )
+@app.get("/")
+async def welcome():
+    return {
+        "message": "Hello from ARGUS!"
+    }
 
+# TODO: Change or delete?
+# @app.middleware("http")
+# async def exception_handler(request: Request, call_next):
+#     response = await call_next(request)
+#     if response.status_code == 200 or response.status_code == 302:
+#         return {
+#             'request': request,
+#         }
+#     elif response.status_code == 401:
+#         return {
+#             'request': request,
+#         }
+#     elif response.status_code == 403:
+#         return {
+#             'request': request,
+#         }
+#     elif response.status_code == 404:
+#         return {
+#             'request': request,
+#         }
+#     elif response.status_code == 500:
+#         return {
+#             'request': request
+#         }
+#     else:
+#         # Generic error page
+#         return {
+#             'request': request,
+#         }
 
-@app.get("/{host}/chart-data")
-async def chart_data(host) -> StreamingResponse:
-    response = StreamingResponse(get_data(host), media_type="text/event-stream")
-    response.headers["Cache-Control"] = "no-cache"
-    response.headers["X-Accel-Buffering"] = "no"
-
-    return response
-
+app.include_router(api_router, prefix=settings.API_V1_STR)
+app.include_router(api_router_mobile, prefix=settings.API_V2_STR)
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8000, host="0.0.0.0")
+    uvicorn.run("main:app",
+                port=8000,
+                host="0.0.0.0",
+                reload=True)
+                # ssl_keyfile="key.pem",
+                # ssl_certfile="cert.pem")
+
+

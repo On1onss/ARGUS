@@ -1,3 +1,7 @@
+
+<p align="center">
+<img src="frontend/src/assets/logo_mini.png" width="300">
+</p>
 <h1 align="center">ARGUS</h1>
 
 <!--A block of information about the repository in badges-->
@@ -29,20 +33,34 @@
 - [x] Create agent
 - [x] Create server
 - [x] Migrate from reqirements.txt to uv
-- [ ] Refactor server
+- [x] Refactor server main.py
 - [ ] Add Routers
   - [ ] Add auth
     - [x] Add db
-    - [ ] Add JWT auth
-    - [ ] Add check expire token
+    - [x] Add JWT auth
+    - [x] Add check expire token
     - [ ] Add crud user
     - [ ] ...
   - [ ] Chart host
+    - [x] Add chart route
+    - [x] Add check host
+    - [ ] ...
+  - [ ] Add pages
+    - [x] Add login page
+    - [ ] Add profile page
+    - [x] Add chart page
     - [ ] ...
 - [ ] Add frontend
-  - [ ] Dashboard
+  - [x] Dashboard
   - [ ] Profile
   - [ ] Node
+  - [x] Chart
+  - [ ] Exception pages
+    - [ ] 403 page
+    - [ ] 500 page
+    - [ ] 404 page
+    - [ ] 401 page
+    - [ ] ...
   - [ ] ...
 - [ ] Add docs
   - [ ] Installation
@@ -61,7 +79,8 @@ ___
 ENVIRONMENT=local
 
 PROJECT_NAME="ARGUS"
-
+VERSION="0.0.1"
+DESCRIPTION="Automated Real-time Global Universal Surveillance"
 # Backend
 SECRET_KEY="changeme" # Change this
 FIRST_SUPERUSER="changeme" # Change this
@@ -69,15 +88,14 @@ FIRST_SUPERUSER_PASSWORD="changeme" # Change this
 
 # DB
 DB_NAME="argus.db"
-DATABASE_URI="sqlite:///argus.db"
-
+DATABASE_URI="sqlite+aiosqlite:///argus.db"
 ```
 
 ## _Init DB for server_
 
 ```shell
 cd server
-alembic upgrade head
+uv run alembic upgrade head
 ```
 
 ## _Run server_

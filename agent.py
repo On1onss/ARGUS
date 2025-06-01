@@ -31,7 +31,7 @@ async def get_proc(request: Request):
             "value": f"{psutil.virtual_memory()[3] / (1024 * 1024 * 1024):.2f}",
         }
     )
-    return f"data:{json_data}\n\n"
+    return f"{json_data}\n\n"
 
 
 if __name__ == "__main__":
